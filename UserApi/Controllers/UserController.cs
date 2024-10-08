@@ -66,5 +66,20 @@ namespace UserApi.Controllers
                 return StatusCode(200, new { message = "Sikeres Törlés!" });
             }
         }
+
+        [HttpGet("{azon}")]
+        public ActionResult<object> Get(Guid azon)
+        {
+            using (var context = new UserDbContext())
+            {
+                var existingUser = context.NewUser.FirstOrDefault(x => x.Id == azon);
+                if (existingUser == null)
+                {
+                    return NotFound(new { message = "Nincs!" });
+                }
+                
+                return StatusCode(200, existingUser);
+            }
+        }
     }
 }
